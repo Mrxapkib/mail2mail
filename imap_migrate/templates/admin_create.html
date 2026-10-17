@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yeni Lisans — {{ service_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+  <div class="admin-wrap">
+    <div class="admin-shell-top">
+      <div class="brand-lock">
+        <div class="brand-mark">PA</div>
+        <div>
+          <strong>Posta<span>Aktar</span></strong>
+          <small>Yeni lisans üret</small>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">← Liste</a>
+      </div>
+    </div>
+
+    <div class="admin-top">
+      <div>
+        <h1>Lisans üret</h1>
+        <p class="muted" style="margin:0">Ödeme onaylandıktan sonra anahtarı oluşturup müşteriye iletin.</p>
+      </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div class="flash {{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    {% if created %}
+    <div class="admin-card success-banner">
+      <h2>Hazır — müşteriye gönderin</h2>
+      <div class="key-box">{{ created.license_key }}</div>
+      <p>Bitiş: <strong>{{ created.expires_at }}</strong></p>
+      <p class="muted" style="margin-bottom:0">Bu kodu e-posta veya WhatsApp ile iletin. Müşteri /app sayfasına yapıştıracak.</p>
+    </div>
+    {% endif %}
+
+    <div class="admin-card" style="max-width:520px">
+      <form method="post">
+        <label>Müşteri adı</label>
+        <input type="text" name="customer_name" placeholder="Ahmet Yılmaz">
+
+        <label>Müşteri e-posta</label>
+        <input type="email" name="customer_email" placeholder="musteri@email.com">
+
+        <label>Not (EFT referansı, tutar vb.)</label>
+        <textarea name="note" rows="2" placeholder="EFT 28.07.2026 — 2490 TL"></textarea>
+
+        <label>Geçerlilik süresi (gün)</label>
+        <input type="number" name="valid_days" value="{{ default_days }}" min="1" max="3650">
+
+        <label>veya kesin bitiş tarihi (opsiyonel)</label>
+        <input type="datetime-local" name="expires_at">
+
+        <p class="muted" style="margin-top:0.5rem;font-size:0.85rem">Bitiş tarihi girerseniz «gün» alanı yok sayılır.</p>
+
+        <button type="submit" class="btn btn-primary" style="margin-top:1rem;padding:0.7rem 1.4rem">Lisans üret</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

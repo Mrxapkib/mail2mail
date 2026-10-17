@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>mail2mail.org — IMAP migration</title>
+  <meta name="description" content="{{ _('meta_desc') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/site.css">
+</head>
+<body>
+  <div class="bg-plane" aria-hidden="true"></div>
+  {% from "_icons.html" import ico %}
+  {% set page = 'home' %}{% include "_nav.html" %}
+  <div class="wrap">
+    <header class="hero">
+      <div class="hero-visual" aria-hidden="true"></div>
+      <div class="hero-brand">mail<em>2mail</em></div>
+      <h1>{{ _('hero_h1') }}</h1>
+      <p class="lead">{{ _('hero_lead') }}</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="/app">{{ _('hero_cta_try') }} {{ ico('arrow') }}</a>
+        <a class="btn btn-ghost" href="#fiyat">{{ ico('tag') }} {{ _('hero_cta_price') }}</a>
+      </div>
+    </header>
+
+    <section id="nedir">
+      <p class="section-kicker">{{ _('sec_what_kicker') }}</p>
+      <h2 class="section-title">{{ _('sec_what_title') }}</h2>
+      <p class="section-sub">{{ _('sec_what_sub') }}</p>
+      <div class="grid-3">
+        <article class="card">
+          <div class="icon">{{ ico('refresh') }}</div>
+          <h3>{{ _('feat1_t') }}</h3>
+          <p>{{ _('feat1_d') }}</p>
+        </article>
+        <article class="card">
+          <div class="icon">{{ ico('folders') }}</div>
+          <h3>{{ _('feat2_t') }}</h3>
+          <p>{{ _('feat2_d') }}</p>
+        </article>
+        <article class="card">
+          <div class="icon">{{ ico('server') }}</div>
+          <h3>{{ _('feat3_t') }}</h3>
+          <p>{{ _('feat3_d') }}</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="neden">
+      <p class="section-kicker">{{ _('why_kicker') }}</p>
+      <h2 class="section-title">{{ _('why_title') }}</h2>
+      <div class="grid-2">
+        <article class="card">
+          <div class="icon">{{ ico('cloud') }}</div>
+          <h3>{{ _('why_1_t') }}</h3>
+          <p>{{ _('why_1_d') }}</p>
+        </article>
+        <article class="card">
+          <div class="icon">{{ ico('spark') }}</div>
+          <h3>{{ _('why_2_t') }}</h3>
+          <p>{{ _('why_2_d') }}</p>
+        </article>
+        <article class="card">
+          <div class="icon">{{ ico('layout') }}</div>
+          <h3>{{ _('why_3_t') }}</h3>
+          <p>{{ _('why_3_d') }}</p>
+        </article>
+        <article class="card">
+          <div class="icon">{{ ico('globe') }}</div>
+          <h3>{{ _('why_4_t') }}</h3>
+          <p>{{ _('why_4_d') }}</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="fiyat">
+      <p class="section-kicker">{{ _('sec_price_kicker') }}</p>
+      <h2 class="section-title">{{ _('sec_price_title') }}</h2>
+      <p class="section-sub">{{ _('sec_price_sub') }}</p>
+      <div class="price-grid">
+        <div class="price-card">
+          <h3>{{ _('plan_trial') }}</h3>
+          <p class="price">0 ₺ <small>{{ _('plan_trial_per') }}</small></p>
+          <ul>
+            <li>{{ _('plan_trial_1') }}</li>
+            <li>{{ _('plan_trial_2') }}</li>
+            <li>{{ _('plan_trial_3') }}</li>
+            <li>{{ _('plan_trial_4') }}</li>
+          </ul>
+          <a class="btn btn-ghost" href="/app">{{ _('btn_start') }}</a>
+        </div>
+        <div class="price-card featured">
+          <span class="badge">{{ _('badge_popular') }}</span>
+          <h3>{{ _('plan_pro') }}</h3>
+          <p class="price">{{ price_pro }} ₺ <small>{{ _('plan_pro_per') }}</small></p>
+          <ul>
+            <li>{{ _('plan_pro_1') }}</li>
+            <li>{{ _('plan_pro_2') }}</li>
+            <li>{{ _('plan_pro_3') }}</li>
+            <li>{{ _('plan_pro_4') }}</li>
+          </ul>
+          <a class="btn btn-primary" href="/buy?plan=pro">{{ _('btn_buy') }}</a>
+        </div>
+        <div class="price-card">
+          <h3>{{ _('plan_support') }}</h3>
+          <p class="price">{{ price_support }} ₺ <small>{{ _('plan_support_per') }}</small></p>
+          <ul>
+            <li>{{ _('plan_sup_1') }}</li>
+            <li>{{ _('plan_sup_2') }}</li>
+            <li>{{ _('plan_sup_3') }}</li>
+            <li>{{ _('plan_sup_4') }}</li>
+          </ul>
+          <a class="btn btn-ghost" href="/buy?plan=support">{{ _('btn_buy') }}</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="faq">
+      <p class="section-kicker">{{ _('faq_kicker') }}</p>
+      <h2 class="section-title">{{ _('faq_title') }}</h2>
+      <details>
+        <summary>{{ _('faq1_q') }}</summary>
+        <p>{{ _('faq1_a') }}</p>
+      </details>
+      <details>
+        <summary>{{ _('faq2_q') }}</summary>
+        <p>{{ _('faq2_a') }}</p>
+      </details>
+      <details>
+        <summary>{{ _('faq3_q') }}</summary>
+        <p>{{ _('faq3_a') }}</p>
+      </details>
+      <details>
+        <summary>{{ _('faq4_q') }}</summary>
+        <p>{{ _('faq4_a') }}</p>
+      </details>
+    </section>
+
+    <footer>
+      <div class="foot">
+        <div><strong class="brand">mail<span>2mail</span><em>.org</em></strong> — {{ _('foot_tag') }}</div>
+        <div>
+          <a href="/docs">{{ _('nav_docs') }}</a> ·
+          <a href="/app">{{ _('nav_app') }}</a> ·
+          <a href="mailto:{{ support_email }}">{{ _('foot_support') }}</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

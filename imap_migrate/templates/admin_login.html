@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Giriş — {{ service_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body class="admin-body">
+  <div class="admin-card narrow">
+    <div class="login-orb" style="top:-30px;right:-20px"></div>
+    <div class="login-inner">
+      <div class="brand-lock" style="margin-bottom:1.25rem">
+        <div class="brand-mark">PA</div>
+        <div>
+          <strong>Posta<span>Aktar</span></strong>
+          <small>Lisans kontrol merkezi</small>
+        </div>
+      </div>
+      <h1 style="margin:0 0 0.35rem;font-size:1.55rem">Hoş geldiniz</h1>
+      <p class="muted" style="margin-top:0">Lisans üretmek ve yönetmek için giriş yapın.</p>
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for cat, msg in messages %}
+          <div class="flash {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+      {% endwith %}
+      <form method="post">
+        <label>Admin şifresi</label>
+        <input type="password" name="password" required autofocus placeholder="••••••••">
+        <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem;padding:0.75rem">Panele gir</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

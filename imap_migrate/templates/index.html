@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ service_name }} — Mail Taşıma</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --card: #1a2332;
+      --border: #2d3a4f;
+      --text: #e7ecf3;
+      --muted: #8b9cb3;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --ok: #22c55e;
+      --warn: #f59e0b;
+      --err: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    h1 { font-size: 1.6rem; margin: 0 0 8px; }
+    .sub { color: var(--muted); margin-bottom: 24px; font-size: 0.95rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .card h2 { font-size: 1rem; margin: 0 0 16px; color: var(--accent); }
+    label { display: block; font-size: 0.8rem; color: var(--muted); margin: 10px 0 4px; }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    input:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent; }
+    .row { display: flex; gap: 10px; align-items: end; }
+    .row > * { flex: 1; }
+    .opts { margin: 20px 0; display: flex; flex-wrap: wrap; gap: 12px 20px; }
+    .opts label.chk {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--text); font-size: 0.9rem; margin: 0; cursor: pointer;
+    }
+    .opts input[type=checkbox] { width: auto; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+    button {
+      padding: 12px 22px;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-secondary { background: var(--border); color: var(--text); }
+    .btn-danger { background: var(--err); color: #fff; }
+    .btn-swap { background: transparent; border: 1px dashed var(--border); color: var(--muted); }
+    .progress-wrap { margin: 16px 0; display: none; }
+    .progress-wrap.active { display: block; }
+    .progress-bar {
+      height: 8px; background: var(--border); border-radius: 4px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: var(--accent); width: 0%; transition: width 0.3s;
+    }
+    .progress-text { font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
+    .log-box {
+      background: #0a0e12;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      height: 320px;
+      overflow-y: auto;
+      font-family: "Cascadia Code", "Consolas", monospace;
+      font-size: 0.8rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .log-box .ok { color: var(--ok); }
+    .log-box .err { color: var(--err); }
+    .token-row { margin-bottom: 16px; }
+    .hint { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .preset-btn { padding: 4px 10px; font-size: 0.75rem; border-radius: 999px; background: var(--bg); color: var(--muted); border: 1px solid var(--border); cursor: pointer; }
+    .trust { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+    .trust span { font-size: 0.8rem; background: #14201a; color: var(--ok); padding: 6px 12px; border-radius: 20px; border: 1px solid #1e3d2f; }
+    .pricing { background: linear-gradient(135deg,#1a2332,#152238); border: 1px solid var(--accent); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; }
+    .pricing strong { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>{{ service_name }}</h1>
+    <p class="sub">Yandex, Gmail veya başka bir kaynaktan tüm posta kutunuzu kendi sunucunuza hızlı ve güvenli taşıyın. Yinelenen mailler otomatik atlanır.</p>
+
+    <div class="trust">
+      <span>🔒 Şifreler kaydedilmez</span>
+      <span>⚡ Paralel aktarım</span>
+      <span>🔄 Kaldığı yerden devam</span>
+      <span>✓ Çift katmanlı yinelenen kontrolü</span>
+    </div>
+
+    <div class="pricing">
+      <strong>EFT ile ödeme sonrası size iletilen lisans kodunu girin.</strong>
+      Bağlantı testi ücretsizdir. Tam mail taşıma için geçerli ve süresi dolmamış kod gerekir.
+    </div>
+
+    {% if token_required %}
+    <div class="card token-row">
+      <label for="auth_token">Erişim Token'ı</label>
+      <input type="password" id="auth_token" placeholder="IMAP_MIGRATE_TOKEN">
+    </div>
+    {% endif %}
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>Lisans Anahtarı</h2>
+      <label>Taşıma kodunuz (EFT onayından sonra iletilir)</label>
+      <input type="text" id="license_key" placeholder="MT-XXXX-XXXX-XXXX-XXXX" autocomplete="off">
+      <p class="hint">Önce «Bağlantıyı Test Et» (ücretsiz). Kodunuzu «Lisansı Doğrula» ile kontrol edebilirsiniz.</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Kaynak (ör. Yandex)</h2>
+        <label>E-posta / Kullanıcı</label>
+        <input type="email" id="source_user" placeholder="ornek@yandex.com" autocomplete="username">
+        <label>Şifre</label>
+        <input type="password" id="source_password" placeholder="Uygulama şifresi önerilir" autocomplete="current-password">
+        <div class="row">
+          <div>
+            <label>IMAP Sunucu</label>
+            <input type="text" id="source_host" placeholder="imap.yandex.com" value="imap.yandex.com">
+            <div class="presets" id="source_presets"></div>
+          </div>
+          <div style="max-width:90px">
+            <label>Port</label>
+            <input type="number" id="source_port" value="993">
+          </div>
+        </div>
+        <label>Alt klasör (opsiyonel)</label>
+        <input type="text" id="source_subfolder" placeholder="Sadece bu alt klasör">
+      </div>
+
+      <div class="card">
+        <h2>Hedef (kendi sunucunuz)</h2>
+        <label>E-posta / Kullanıcı</label>
+        <input type="email" id="dest_user" placeholder="ornek@alanadiniz.com" autocomplete="username">
+        <label>Şifre</label>
+        <input type="password" id="dest_password" autocomplete="current-password">
+        <div class="row">
+          <div>
+            <label>IMAP Sunucu</label>
+            <div class="presets" id="dest_presets"></div>
+            <input type="text" id="dest_host" placeholder="mail.alanadiniz.com">
+          </div>
+          <div style="max-width:90px">
+            <label>Port</label>
+            <input type="number" id="dest_port" value="993">
+          </div>
+        </div>
+        <label>Hedef alt klasör öneki (opsiyonel)</label>
+        <input type="text" id="dest_subfolder" placeholder="Yandex/INBOX gibi">
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>Seçenekler</h2>
+      <div class="opts">
+        <label class="chk"><input type="checkbox" id="skip_duplicates" checked> Yinelenenleri atla (Message-ID)</label>
+        <label class="chk"><input type="checkbox" id="create_folders" checked> Eksik klasörleri oluştur</label>
+        <label class="chk"><input type="checkbox" id="dry_run"> Sadece simülasyon (kopyalama yok)</label>
+        <label class="chk"><input type="checkbox" id="check_only"> Sadece bağlantı testi</label>
+        <label class="chk"><input type="checkbox" id="folder_sizes_only"> Sadece klasör boyutları</label>
+        <label class="chk"><input type="checkbox" id="delete_from_source"> Taşı (kaynakta sil)</label>
+        <label class="chk"><input type="checkbox" id="strict_dest"> Hedefte fazlalıkları sil</label>
+      </div>
+      <label>Klasör filtresi (içeren ad)</label>
+      <input type="text" id="folder_filter" placeholder="Boş = tüm klasörler">
+      <p class="hint">Paralel iş parçacığı: hız için 4 önerilir. Büyük kutularda ağ ve sunucu limitine dikkat edin.</p>
+      <input type="number" id="max_workers" value="4" min="1" max="6" style="max-width:80px;margin-top:8px">
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" id="btnStart" onclick="startSync()">Senkronize Et</button>
+      <button class="btn-secondary" id="btnCheck" onclick="checkCreds()">Bağlantıyı Test Et</button>
+      <button class="btn-secondary" id="btnLicense" onclick="checkLicense()">Lisansı Doğrula</button>
+      <button class="btn-danger" id="btnStop" onclick="stopSync()" disabled>Durdur</button>
+      <button class="btn-swap" onclick="swapMailboxes()">Kaynak ↔ Hedef değiştir</button>
+    </div>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-text" id="progressText">Hazırlanıyor...</div>
+    </div>
+
+    <div class="card">
+      <h2>Log</h2>
+      <div class="log-box" id="logBox"></div>
+    </div>
+  </div>
+
+  <script>
+    const PRESETS = {{ presets | tojson }};
+    let jobId = null;
+    let logSince = 0;
+    let pollTimer = null;
+
+    function buildPresets() {
+      ['source', 'dest'].forEach(side => {
+        const box = document.getElementById(side + '_presets');
+        Object.keys(PRESETS).forEach(name => {
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.className = 'preset-btn';
+          b.textContent = PRESETS[name].label || name;
+          b.onclick = () => setPreset(side, name);
+          box.appendChild(b);
+        });
+      });
+    }
+    buildPresets();
+
+    function setPreset(side, name) {
+      const p = PRESETS[name];
+      if (!p) return;
+      document.getElementById(side + '_host').value = p.host;
+      document.getElementById(side + '_port').value = p.port;
+    }
+
+    function payload() {
+      const data = {
+        source_user: document.getElementById('source_user').value.trim(),
+        source_password: document.getElementById('source_password').value,
+        source_host: document.getElementById('source_host').value.trim(),
+        source_port: document.getElementById('source_port').value,
+        source_subfolder: document.getElementById('source_subfolder').value.trim(),
+        dest_user: document.getElementById('dest_user').value.trim(),
+        dest_password: document.getElementById('dest_password').value,
+        dest_host: document.getElementById('dest_host').value.trim(),
+        dest_port: document.getElementById('dest_port').value,
+        dest_subfolder: document.getElementById('dest_subfolder').value.trim(),
+        skip_duplicates: document.getElementById('skip_duplicates').checked,
+        create_folders: document.getElementById('create_folders').checked,
+        dry_run: document.getElementById('dry_run').checked,
+        check_only: document.getElementById('check_only').checked,
+        folder_sizes_only: document.getElementById('folder_sizes_only').checked,
+        delete_from_source: document.getElementById('delete_from_source').checked,
+        strict_dest: document.getElementById('strict_dest').checked,
+        folder_filter: document.getElementById('folder_filter').value.trim(),
+        max_workers: document.getElementById('max_workers').value,
+        license_key: document.getElementById('license_key').value.trim(),
+      };
+      return data;
+    }
+
+    function headers() {
+      const h = { 'Content-Type': 'application/json' };
+      const t = document.getElementById('auth_token');
+      if (t && t.value) h['X-Auth-Token'] = t.value;
+      return h;
+    }
+
+    function appendLog(msg) {
+      const box = document.getElementById('logBox');
+      const line = document.createElement('div');
+      if (msg.includes('[OK]') || msg.includes('Tamamlandi')) line.className = 'ok';
+      if (msg.includes('[HATA]') || msg.includes('[!]') || msg.includes('KRITIK')) line.className = 'err';
+      line.textContent = msg;
+      box.appendChild(line);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function setRunning(running) {
+      document.getElementById('btnStart').disabled = running;
+      document.getElementById('btnCheck').disabled = running;
+      document.getElementById('btnStop').disabled = !running;
+      document.getElementById('progressWrap').classList.toggle('active', running);
+    }
+
+    function updateProgress(p, stats) {
+      const ft = p.folders_total || 1;
+      const fd = p.folders_done || 0;
+      const mt = p.messages_total || (stats && stats.messages_total) || 0;
+      const done = (stats && (stats.messages_copied + stats.messages_skipped)) || 0;
+      let pct = Math.min(100, Math.round((fd / ft) * 100));
+      if (mt > 0 && done > 0) pct = Math.min(100, Math.round((done / mt) * 100));
+      document.getElementById('progressFill').style.width = pct + '%';
+      let txt = `Klasör: ${fd}/${ft}`;
+      if (mt) txt += ` | Mesaj: ~${done}/${mt}`;
+      if (p.current_folder) txt += ` — ${p.current_folder}`;
+      if (stats) {
+        txt += ` | Kopya: ${stats.messages_copied || 0} | Atlanan: ${stats.messages_skipped || 0}`;
+        if (stats.bytes_transferred) {
+          const mb = (stats.bytes_transferred / 1048576).toFixed(1);
+          txt += ` | ${mb} MB`;
+        }
+      }
+      if (p.speed_mbps) txt += ` | ${p.speed_mbps} MB/s`;
+      if (p.engine === 'imapsync') txt += ' | Turbo motor';
+      document.getElementById('progressText').textContent = txt;
+    }
+
+    function pollLogs() {
+      if (!jobId) return;
+      fetch(`/api/logs/${jobId}?since=${logSince}`, { headers: headers() })
+        .then(r => r.json())
+        .then(data => {
+          (data.logs || []).forEach(e => {
+            appendLog(e.msg);
+            logSince = Math.max(logSince, e.t);
+          });
+          updateProgress(data.progress || {}, data.stats);
+          if (data.status === 'done' || data.status === 'error' || data.status === 'cancelled') {
+            clearInterval(pollTimer);
+            pollTimer = null;
+            setRunning(false);
+            jobId = null;
+            if (data.status === 'done') appendLog('=== Islem bitti ===');
+          }
+        })
+        .catch(() => {});
+    }
+
+    async function startSync() {
+      document.getElementById('logBox').innerHTML = '';
+      logSince = 0;
+      setRunning(true);
+      try {
+        const res = await fetch('/api/start', {
+          method: 'POST',
+          headers: headers(),
+          body: JSON.stringify(payload()),
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          if (data.need_license) {
+            appendLog('Lisans gerekli: ' + (data.error || ''));
+          } else {
+            appendLog('HATA: ' + (data.error || res.statusText));
+          }
+          setRunning(false);
+          return;
+        }
+        jobId = data.job_id;
+        pollTimer = setInterval(pollLogs, 800);
+        pollLogs();
+      } catch (e) {
+        appendLog('HATA: ' + e.message);
+        setRunning(false);
+      }
+    }
+
+    async function stopSync() {
+      await fetch('/api/stop', { method: 'POST', headers: headers() });
+      appendLog('Durdurma istegi gonderildi...');
+    }
+
+    async function checkLicense() {
+      document.getElementById('logBox').innerHTML = '';
+      const key = document.getElementById('license_key').value.trim();
+      if (!key) { appendLog('Lisans kodu girin.'); return; }
+      try {
+        const res = await fetch('/api/validate-license', {
+          method: 'POST',
+          headers: headers(),
+          body: JSON.stringify({ license_key: key }),
+        });
+        const data = await res.json();
+        appendLog(data.message || (data.ok ? 'Gecerli' : 'Gecersiz'));
+      } catch (e) {
+        appendLog('HATA: ' + e.message);
+      }
+    }
+
+    async function checkCreds() {
+      document.getElementById('logBox').innerHTML = '';
+      const p = payload();
+      p.check_only = true;
+      try {
+        const res = await fetch('/api/check', {
+          method: 'POST',
+          headers: headers(),
+          body: JSON.stringify(p),
+        });
+        const data = await res.json();
+        (data.logs || []).forEach(appendLog);
+        appendLog(data.message || (data.ok ? 'OK' : 'Basarisiz'));
+      } catch (e) {
+        appendLog('HATA: ' + e.message);
+      }
+    }
+
+    function swapMailboxes() {
+      ['user','password','host','port','subfolder'].forEach(f => {
+        const a = document.getElementById('source_' + f);
+        const b = document.getElementById('dest_' + f);
+        if (f === 'subfolder') {
+          const t = a.value; a.value = b.value; b.value = t;
+        } else {
+          const t = a.value; a.value = b.value; b.value = t;
+          if (f === 'password') { const tp = a.type; a.type = b.type; b.type = tp; }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

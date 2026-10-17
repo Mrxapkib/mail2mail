@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ _('nav_app') }} — mail2mail.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/site.css">
+</head>
+<body>
+  <div class="bg-plane" aria-hidden="true"></div>
+  {% from "_icons.html" import ico %}
+  {% set page = 'app' %}{% include "_nav.html" %}
+  <div class="wrap">
+
+    <section style="padding-top:1.5rem;">
+      <p class="section-kicker">{{ _('app_kicker') }}</p>
+      <h2 class="section-title">{{ _('app_title') }}</h2>
+      <p class="section-sub">{{ _('app_sub') }} <a href="/#fiyat">{{ _('btn_buy') }}</a></p>
+
+      <div class="license-bar card">
+        <div>
+          <label for="license">{{ _('lic_label') }}</label>
+          <input id="license" type="text" placeholder="PA-XXXX-XXXX-XXXX" autocomplete="off">
+        </div>
+          <button class="btn btn-ghost" type="button" id="btnLicense">{{ ico('key') }} {{ _('lic_btn') }}</button>
+        <span class="status-pill" id="licStatus">{{ _('lic_free') }}</span>
+      </div>
+
+      <p class="stay-note">{{ _('stay_note') }}</p>
+      <div class="actions" style="margin:0 0 1rem;">
+        <button class="btn btn-ghost" type="button" id="btnSwap">{{ ico('swap') }} {{ _('btn_swap') }}</button>
+      </div>
+
+      <div class="tool-layout">
+        <div class="card" id="card-src">
+          <h3>{{ _('src_title') }}</h3>
+          <label>{{ _('lbl_provider') }}</label>
+          <select id="src_preset">
+            <option value="">{{ _('opt_custom') }}</option>
+            <option value="gmail">Gmail</option>
+            <option value="outlook">Outlook / Microsoft 365</option>
+            <option value="yandex">Yandex</option>
+            <option value="zoho">Zoho</option>
+            <option value="cpanel">cPanel / Plesk</option>
+          </select>
+          <div class="row">
+            <div>
+              <label>{{ _('lbl_host') }}</label>
+              <input id="src_host" placeholder="imap.example.com">
+            </div>
+            <div>
+              <label>{{ _('lbl_port') }}</label>
+              <input id="src_port" type="number" value="993">
+            </div>
+          </div>
+          <label>{{ _('lbl_user') }}</label>
+          <input id="src_user" autocomplete="username">
+          <label>{{ _('lbl_pass') }}</label>
+          <div class="pass-row">
+            <input id="src_password" type="password" autocomplete="current-password">
+            <button class="btn btn-ghost btn-mini" type="button" data-toggle="src_password">{{ ico('eye') }} <span class="btn-label">{{ _('btn_show') }}</span></button>
+          </div>
+          <p class="hint" id="src_hint" hidden></p>
+        </div>
+
+        <div class="card" id="card-dst">
+          <h3>{{ _('dst_title') }}</h3>
+          <label>{{ _('lbl_provider') }}</label>
+          <select id="dst_preset">
+            <option value="">{{ _('opt_custom') }}</option>
+            <option value="gmail">Gmail</option>
+            <option value="outlook">Outlook / Microsoft 365</option>
+            <option value="yandex">Yandex</option>
+            <option value="zoho">Zoho</option>
+            <option value="cpanel">cPanel / Plesk</option>
+          </select>
+          <div class="row">
+            <div>
+              <label>{{ _('lbl_host') }}</label>
+              <input id="dst_host" placeholder="mail.newserver.com">
+            </div>
+            <div>
+              <label>{{ _('lbl_port') }}</label>
+              <input id="dst_port" type="number" value="993">
+            </div>
+          </div>
+          <label>{{ _('lbl_user') }}</label>
+          <input id="dst_user" autocomplete="username">
+          <label>{{ _('lbl_pass') }}</label>
+          <div class="pass-row">
+            <input id="dst_password" type="password" autocomplete="current-password">
+            <button class="btn btn-ghost btn-mini" type="button" data-toggle="dst_password">{{ ico('eye') }} <span class="btn-label">{{ _('btn_show') }}</span></button>
+          </div>
+          <p class="hint" id="dst_hint" hidden></p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:1rem;">
+        <div class="opts">
+          <label><input type="checkbox" id="opt_ssl" checked> {{ _('opt_ssl') }}</label>
+          <label><input type="checkbox" id="opt_delete"> {{ _('opt_delete') }}</label>
+          <label><input type="checkbox" id="opt_dry"> {{ _('opt_dry') }}</label>
+        </div>
+        <div class="actions">
+          <button class="btn btn-ghost" type="button" id="btnTest">{{ ico('check') }} {{ _('btn_test') }}</button>
+          <button class="btn btn-primary" type="button" id="btnStart">{{ ico('play') }} {{ _('btn_go') }}</button>
+          <button class="btn btn-ghost" type="button" id="btnStop" disabled>{{ ico('stop') }} {{ _('btn_stop') }}</button>
+        </div>
+        <div class="progress" id="progress"><span></span></div>
+        <p class="stat-line" id="statLine" hidden></p>
+        <div class="log" id="log">{{ _('log_ready') }}
+</div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="foot">
+        <div>{{ ico('shield') }} {{ _('secure_note') }}</div>
+        <div><a href="/docs">{{ _('nav_docs') }}</a></div>
+      </div>
+    </footer>
+  </div>
+  <script id="ui-copy" type="application/json">{{ {
+    "show": _('btn_show'),
+    "hide": _('btn_hide'),
+    "gmail": _('hint_gmail'),
+    "outlook": _('hint_outlook'),
+    "default": _('hint_default'),
+    "progress": _('stat_progress')
+  }|tojson }}</script>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

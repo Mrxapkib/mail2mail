@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ _('nav_buy') }} — mail2mail.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/site.css">
+</head>
+<body>
+  <div class="bg-plane" aria-hidden="true"></div>
+  {% set page = 'buy' %}{% include "_nav.html" %}
+  <div class="wrap">
+
+    <section style="padding-top:2rem; max-width:640px;">
+      <p class="section-kicker">{{ _('buy_kicker') }}</p>
+      <h2 class="section-title">{{ plan_title }}</h2>
+      <p class="section-sub">{{ _('buy_sub', amount=amount) }}</p>
+
+      <form class="card" method="post" action="/buy">
+        <input type="hidden" name="plan" value="{{ plan }}">
+        <label>{{ _('buy_name') }}</label>
+        <input name="name" required>
+        <label>{{ _('buy_email') }}</label>
+        <input name="email" type="email" required>
+        <label>{{ _('buy_note') }}</label>
+        <textarea name="note" rows="3" placeholder="{{ _('buy_note_ph') }}"></textarea>
+        <div class="actions">
+          <button class="btn btn-primary" type="submit">{{ _('buy_submit') }}</button>
+        </div>
+        <p class="note">{{ _('buy_note_foot') }}</p>
+      </form>
+    </section>
+  </div>
+</body>
+</html>

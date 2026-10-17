@@ -1,0 +1,26 @@
+{% from "_icons.html" import ico %}
+<header class="site-header">
+  <div class="wrap">
+    <nav class="nav">
+      <a class="brand" href="/">{{ ico('mail') }} mail<span>2mail</span><em>.org</em></a>
+      <div class="nav-links">
+        {% if page == 'home' %}
+        <a href="#nedir">{{ ico('info') }} {{ _('nav_what') }}</a>
+        <a href="#fiyat">{{ ico('tag') }} {{ _('nav_pricing') }}</a>
+        <a href="/docs">{{ ico('book') }} {{ _('nav_docs') }}</a>
+        <a class="btn btn-primary" href="/app">{{ _('nav_app') }} {{ ico('arrow') }}</a>
+        {% elif page == 'app' %}
+        <a href="/#fiyat">{{ ico('tag') }} {{ _('nav_pricing') }}</a>
+        <a href="/docs">{{ ico('book') }} {{ _('nav_docs') }}</a>
+        <a class="btn btn-ghost" href="/">{{ ico('home') }} {{ _('nav_home') }}</a>
+        {% elif page == 'docs' %}
+        <a href="/#fiyat">{{ ico('tag') }} {{ _('nav_pricing') }}</a>
+        <a class="btn btn-primary" href="/app">{{ _('nav_app') }} {{ ico('arrow') }}</a>
+        {% else %}
+        <a href="/app">{{ ico('mail') }} {{ _('nav_app') }}</a>
+        <a class="btn btn-ghost" href="/">{{ ico('home') }} {{ _('nav_home') }}</a>
+        {% endif %}
+      </div>
+    </nav>
+  </div>
+</header>

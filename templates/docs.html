@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ _('nav_docs') }} — mail2mail.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/css/site.css">
+</head>
+<body>
+  <div class="bg-plane" aria-hidden="true"></div>
+  {% from "_icons.html" import ico %}
+  {% set page = 'docs' %}{% include "_nav.html" %}
+  <div class="wrap">
+
+    <section style="padding-top:1.5rem; max-width:760px;">
+      <p class="section-kicker">{{ _('docs_kicker') }}</p>
+      <h2 class="section-title">{{ _('docs_title') }}</h2>
+
+      <div class="card" style="margin-bottom:1rem;">
+        <h3>{{ _('docs1_t') }}</h3>
+        <p>{{ _('docs1_d') }}</p>
+      </div>
+      <div class="card" style="margin-bottom:1rem;">
+        <h3>{{ _('docs2_t') }}</h3>
+        <p>{{ _('docs2_d') }}</p>
+      </div>
+      <div class="card" style="margin-bottom:1rem;">
+        <h3>{{ _('docs3_t') }}</h3>
+        <p>{{ _('docs3_d') }}</p>
+      </div>
+      <div class="card" style="margin-bottom:1rem;">
+        <h3>{{ _('docs4_t') }}</h3>
+        <p>{{ _('docs4_d') }}</p>
+      </div>
+      <div class="card">
+        <h3>{{ _('docs5_t') }}</h3>
+        <p>{{ _('docs5_d') }}</p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="foot">
+        <div>mail2mail.org</div>
+        <a href="/">{{ _('nav_home') }}</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

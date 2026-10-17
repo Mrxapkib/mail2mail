@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kurulum — {{ service_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body class="admin-body">
+  <div class="admin-card narrow">
+    <div class="login-inner">
+      <div class="brand-lock" style="margin-bottom:1rem">
+        <div class="brand-mark">PA</div>
+        <div>
+          <strong>Posta<span>Aktar</span></strong>
+          <small>Kurulum gerekli</small>
+        </div>
+      </div>
+      <h1 style="margin:0 0 0.5rem;font-size:1.4rem">Admin şifresi yok</h1>
+      <p class="muted">Sunucuda ortam değişkeni tanımlayın, sonra uygulamayı yeniden başlatın:</p>
+      <pre>$env:IMAP_ADMIN_PASSWORD="guclu-sifreniz"</pre>
+      <p class="muted" style="margin-bottom:0">Ardından <a href="{{ url_for('admin.login') }}">/admin</a> adresine gidin.</p>
+    </div>
+  </div>
+</body>
+</html>

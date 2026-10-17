@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lisanslar — {{ service_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+  <div class="admin-wrap">
+    <div class="admin-shell-top">
+      <div class="brand-lock">
+        <div class="brand-mark">PA</div>
+        <div>
+          <strong>Posta<span>Aktar</span></strong>
+          <small>Admin · Lisans merkezi</small>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <a href="{{ url_for('admin.create') }}" class="btn btn-primary">+ Yeni lisans</a>
+        <a href="/" class="btn btn-secondary" target="_blank">Site</a>
+        <a href="{{ url_for('admin.logout') }}" class="btn btn-secondary">Çıkış</a>
+      </div>
+    </div>
+
+    <div class="admin-top">
+      <div>
+        <h1>Lisans yönetimi</h1>
+        <p class="muted" style="margin:0">Ödeme sonrası anahtar üretin, uzatın veya iptal edin.</p>
+      </div>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div class="flash {{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <div class="quick-tips">
+      <div class="tip"><strong>1. Sipariş</strong>Müşteri /buy formundan düşer → data/orders.txt</div>
+      <div class="tip"><strong>2. Üret</strong>«Yeni lisans» ile anahtar kes, e-posta ile gönder</div>
+      <div class="tip"><strong>3. Takip</strong>Aktif / bitiş / kullanım sayılarını buradan izle</div>
+    </div>
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-label">Aktif</div>
+        <strong>{{ summary.active }}</strong>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Süresi dolmuş</div>
+        <strong>{{ summary.expired }}</strong>
+      </div>
+      <div class="stat">
+        <div class="stat-label">İptal</div>
+        <strong>{{ summary.revoked }}</strong>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Toplam</div>
+        <strong>{{ summary.total }}</strong>
+      </div>
+    </div>
+
+    <form class="search-bar" method="get">
+      <input type="search" name="q" value="{{ search }}" placeholder="Ara: isim, e-posta, kod...">
+      <select name="status">
+        <option value="">Tüm durumlar</option>
+        <option value="active" {% if status_filter=='active' %}selected{% endif %}>Aktif</option>
+        <option value="expired" {% if status_filter=='expired' %}selected{% endif %}>Süresi dolmuş</option>
+        <option value="revoked" {% if status_filter=='revoked' %}selected{% endif %}>İptal</option>
+      </select>
+      <button type="submit" class="btn btn-secondary">Filtrele</button>
+    </form>
+
+    <div class="admin-card table-shell">
+      <table>
+        <thead>
+          <tr>
+            <th>Kod</th>
+            <th>Müşteri</th>
+            <th>Bitiş</th>
+            <th>Kalan</th>
+            <th>Kullanım</th>
+            <th>Durum</th>
+            <th>İşlem</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for lic in licenses %}
+          <tr>
+            <td><a href="{{ url_for('admin.license_detail', license_id=lic.id) }}"><code>{{ lic.license_key }}</code></a></td>
+            <td>
+              {{ lic.customer_name or '—' }}<br>
+              <span class="muted">{{ lic.customer_email }}</span>
+            </td>
+            <td>{{ lic.expires_at }}</td>
+            <td>{% if lic.days_left is not none %}{{ lic.days_left }} gün{% else %}—{% endif %}</td>
+            <td>{{ lic.use_count }} kez</td>
+            <td><span class="badge {{ lic.status }}">{{ lic.status }}</span></td>
+            <td>
+              {% if lic.status == 'active' %}
+              <form class="inline-form" method="post" action="{{ url_for('admin.license_extend', license_id=lic.id) }}" onsubmit="return confirm('Süre uzatılsın mı?')">
+                <input type="number" name="extra_days" value="30" min="1" max="3650">
+                <button type="submit" class="btn btn-sm btn-secondary">Uzat</button>
+              </form>
+              <form class="inline-form" method="post" action="{{ url_for('admin.license_revoke', license_id=lic.id) }}" onsubmit="return confirm('Lisans iptal edilsin mi?')">
+                <button type="submit" class="btn btn-sm btn-danger">İptal</button>
+              </form>
+              {% else %}—{% endif %}
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="7" class="muted" style="padding:1.5rem">Henüz lisans yok. Sağ üstten «Yeni lisans» ile oluşturun.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

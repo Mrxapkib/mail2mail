@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lisans Detay — {{ service_name }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='admin.css') }}">
+</head>
+<body>
+  <div class="admin-wrap">
+    <div class="admin-shell-top">
+      <div class="brand-lock">
+        <div class="brand-mark">PA</div>
+        <div>
+          <strong>Posta<span>Aktar</span></strong>
+          <small>Lisans detayı</small>
+        </div>
+      </div>
+      <div class="admin-actions">
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">← Liste</a>
+      </div>
+    </div>
+
+    <div class="admin-top">
+      <div>
+        <h1>Lisans kartı</h1>
+        <p class="muted" style="margin:0">Anahtarı kopyalayıp müşteriye iletebilirsiniz.</p>
+      </div>
+    </div>
+
+    <div class="admin-card" style="max-width:580px">
+      <div class="key-box">{{ lic.license_key }}</div>
+      <dl class="detail-grid">
+        <div class="detail-row">
+          <dt>Durum</dt>
+          <dd><span class="badge {{ lic.status }}">{{ lic.status }}</span></dd>
+        </div>
+        <div class="detail-row">
+          <dt>Müşteri</dt>
+          <dd>{{ lic.customer_name or '—' }}</dd>
+        </div>
+        <div class="detail-row">
+          <dt>E-posta</dt>
+          <dd>{{ lic.customer_email or '—' }}</dd>
+        </div>
+        <div class="detail-row">
+          <dt>Not</dt>
+          <dd>{{ lic.note or '—' }}</dd>
+        </div>
+        <div class="detail-row">
+          <dt>Oluşturulma</dt>
+          <dd>{{ lic.created_at }}</dd>
+        </div>
+        <div class="detail-row">
+          <dt>Bitiş</dt>
+          <dd>{{ lic.expires_at }}{% if lic.days_left is not none %} · {{ lic.days_left }} gün kaldı{% endif %}</dd>
+        </div>
+        <div class="detail-row">
+          <dt>Kullanım</dt>
+          <dd>{{ lic.use_count }} kez{% if lic.last_used_at %} · son: {{ lic.last_used_at }}{% endif %}</dd>
+        </div>
+      </dl>
+
+      {% if lic.status == 'active' %}
+      <div style="margin-top:1.25rem;display:flex;gap:0.6rem;flex-wrap:wrap;align-items:center">
+        <form method="post" action="{{ url_for('admin.license_extend', license_id=lic.id) }}" class="inline-form">
+          <input type="number" name="extra_days" value="30" min="1">
+          <button type="submit" class="btn btn-secondary">Süre uzat</button>
+        </form>
+        <form method="post" action="{{ url_for('admin.license_revoke', license_id=lic.id) }}" onsubmit="return confirm('İptal edilsin mi?')">
+          <button type="submit" class="btn btn-danger">Lisansı iptal et</button>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

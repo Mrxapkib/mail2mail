@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.vercel/
+.env
+data/
+*.db
+imap_migrate/data/
+imap_migrate/licenses.txt
