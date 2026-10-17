@@ -6,3 +6,4 @@ data/
 *.db
 imap_migrate/data/
 imap_migrate/licenses.txt
+.vercel
