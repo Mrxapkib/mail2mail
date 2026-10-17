@@ -56,8 +56,8 @@ app.config["SECRET_KEY"] = os.environ.get("POSTAAKTAR_SECRET", secrets.token_hex
 app.config["PERMANENT_SESSION_LIFETIME"] = 86400 * 7
 app.register_blueprint(admin_bp)
 
-PRICE_PRO = int(os.environ.get("POSTAAKTAR_PRICE_PRO", "2490"))
-PRICE_SUPPORT = int(os.environ.get("POSTAAKTAR_PRICE_SUPPORT", "4490"))
+PRICE_PRO = int(os.environ.get("POSTAAKTAR_PRICE_PRO", "79"))
+PRICE_SUPPORT = int(os.environ.get("POSTAAKTAR_PRICE_SUPPORT", "149"))
 SUPPORT_EMAIL = os.environ.get("POSTAAKTAR_SUPPORT_EMAIL", "hello@mail2mail.org")
 ORDERS_FILE = Path(os.environ.get("POSTAAKTAR_ORDERS", ROOT / "data" / "orders.txt"))
 
